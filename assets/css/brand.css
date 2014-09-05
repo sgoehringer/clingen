@@ -529,7 +529,7 @@ a.active, .active {
     width: 200px;
 }
 
-/* MEDIA Helpers
+/* MEDIA Helpers 
 -------------------------------------------------- */
 
 @media (max-width: 767px) {
@@ -539,6 +539,9 @@ a.active, .active {
     height: 70px;
     width: 180px;
     top:-14px;
+}
+#heroCarousel {
+  margin-top: 65px;
 }
 }
 
