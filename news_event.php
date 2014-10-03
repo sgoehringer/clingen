@@ -45,7 +45,9 @@ include("./inc/head.php");
         echo "<div class='col-sm-12'><ul class='nav nav-tabs' role='tablist'>
           <li class='active'><a href='{$page->url}' title='{$page->title}'>Overview</a></li>";
         foreach($page->children as $match) {
-          $tempval .= "<li><a href='{$match->url}' title='{$match->title}'>{$match->title}</a></li>";
+          if($match->template == "rsvp_form") { $tempcss = "btn-info text-white";}
+          $tempval .= "<li><a href='{$match->url}' class='$tempcss' style='' title='{$match->title}'>{$match->title}</a></li>";
+            unset($tempcss);
           }
           echo $tempval;
         echo "</ul></div>"; 

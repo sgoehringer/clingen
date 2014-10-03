@@ -13,7 +13,7 @@ include("./inc/head.php");
   <div class='thumbnail padding-bottom-md'>
   <div class='col-sm-6 text-center '>
   <h2 class='padding-bottom-none margin-bottom-xs'>ClinGen has over <u><? echo $pages->find("template=partner")->count; ?></u>  Supporters</h2>
-  <div class='margin-bottom-xs text-sm text-muted'>We proud of our international support by instititions, corporations, &amp; hospitals. </div><a href='<?=$pages->get(1114)->url ?>' class='btn btn-xs text-white text-xs btn-primary'>How to participate</a>
+  <div class='margin-bottom-xs text-sm text-muted'>We are proud of our international support by instititions, corporations, &amp; hospitals. </div><a href='<?=$pages->get(1114)->url ?>' class='btn btn-xs text-white text-xs btn-primary'>How to participate</a>
   </div>
   <div class='col-sm-6 text-center '>
   <h2 class='padding-bottom-none margin-bottom-none'>ClinVar Submitters</h2>
@@ -24,6 +24,7 @@ include("./inc/head.php");
   <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="<?=$pages->get(1382)->var ?>" aria-valuemin="0" aria-valuemax="<?=$pages->get(1381)->var ?>" style="width: <?=$tempvar ?>%">
     <?=$tempvar ?>% TO FIRST TARGET GOAL
   </div>
+  <div <div class="pull-right text-xs text-muted padding-right-xs hidden-sm hidden-xs" style="padding-top: 3px"><?=$pages->get(1381)->var?> Variants</div>
 </div> 
   <div class='text-sm text-muted'><strong>Over <?=$pages->get(1382)->var ?> variants</strong> with clinical assertions have been shared by ClinGen supporters.</div>
 </div>
