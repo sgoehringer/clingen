@@ -11,39 +11,15 @@ include("./inc/head.php");
    
     <ul class="nav nav-tabs">
   
-  <li class="active"><a href="#" data-toggle="tab">Leadership</a></li>
-  <li class="active"><a href="#" data-toggle="tab">PI's</a></li>
   <li class="active"><a href="#Alphabetical" data-toggle="tab">Team</a></li>
   <li class=""><a href="#workinggroup" data-toggle="tab">Working Groups</a></li>
-  <li class=""><a href="#location" data-toggle="tab">ClinGen Sites</a></li>
 </ul>
 
 <!-- Tab panes -->
 <div class="tab-content">
 
 
-   <div class="tab-pane" id="location">
-   
-   
-   <?
-  $matches = $pages->find("template=location, sort=alphabetical");
-  foreach($matches as $match) {
-      echo "<h3>{$match->title}</h3><div class='row'><ul class='list-unstyled padding-top-xs padding-bottom-lg'>";
-  // Finds all of the staff that are tied to this location.
-  $matches1 = $pages->find("template=staff, relate_supporter=$match->id, sort=alphabetical");
-      foreach($matches1 as $match1) {
-        $tempval .= "<li class='col-sm-6'><a href='{$match1->url}.' title='{$match1->title}.'>{$match1->title}</a></li> ";
-    }
-   if($tempval) { 
-    echo $tempval;
-   }
-   echo "</ul></div>";
-   unset($tempval);
-   }
-  ?>
-   
-   
-   </div>
+  
   <div class="tab-pane" id="workinggroup">
   
    <?
