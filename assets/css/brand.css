@@ -56,10 +56,12 @@
  color:#ccc;
 }
 li.support_type_1449:before {
-  color:#0083FF !important;
+  color:#00CD3C !important;
+  /*color:#0083FF !important;*/
 }
 li.support_type_1450:before {
-  color:#00CD3C !important;
+  /*color:#00CD3C !important;*/
+  color:#0083FF !important;
 }
 #nav_well
 {
