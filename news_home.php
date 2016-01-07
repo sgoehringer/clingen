@@ -20,7 +20,7 @@ include("./inc/head.php");
 					if($parent == "1071") {
 				    	$features = $pages->find("template=news_event|iccg_conference_home, limit=6, sort=-date_start");  // Uses the Parent ID to search for entries that only have that as a parent
 					} elseif($parent == "1041") {
-				    	$features = $pages->find("parent=$parent, limit=6, sort=date_start");  // Uses the Parent ID to search for entries that only have that as a parent
+				    	$features = $pages->find("parent=$parent, limit=6, sort=-date_start");  // Uses the Parent ID to search for entries that only have that as a parent
 					} else {
 				    	$features = $pages->find("parent=$parent, limit=6, sort=-date_start");  // Uses the Parent ID to search for entries that only have that as a parent
 					}

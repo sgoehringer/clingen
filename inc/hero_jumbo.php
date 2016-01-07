@@ -22,29 +22,45 @@
 			echo "<div class='carousel-inner background-blue background-blue-img'>";
 			$key = 0;
 				foreach($page->repeat_hero as $repeat) {
+					if($repeat->relate_page){ 
+						$link_src_open	= " <a class='text-white text-underline' href='{$repeat->relate_page->url}'>";
+						$link_text	= " Learn more &raquo;";
+						$link_src_close	= "</a>";
+					}
 					if($repeat->image){ 
 						$img_sized	= $repeat->image->size(1500,600);
-						$img_src	= "<img src='{$img_sized->url}' class='img-responsive margin-left-auto margin-right-auto' alt='{$repeat->repeat_label}' />";
+						$img_src	= "<a class='text-white text-underline' href='{$repeat->relate_page->url}'><img src='{$img_sized->url}' class='img-responsive margin-left-auto margin-right-auto' alt='{$repeat->repeat_label}' /></a>";
 					}
-					if($repeat->relate_page){ 
-						$link_src	= " <a class='text-white text-underline' href='{$repeat->relate_page->url}'>Learn more &raquo;</a></p>";
+					if($repeat->summary){ 
+						$summary_src	= "<span class='hidden-xs hidden-sm'>{$repeat->summary}
+										{$link_src_open}{$link_text}{$link_src_close}<p></p> 	</span>";
+					}
+					if($repeat->label){ 
+						$label_src	= "<h2 class='margin-top-none'>{$repeat->label}</h2>";
+					}
+          
+					if($summary_src || $label_src){ 
+						$caption_src_open	= "<div class='container'>
+           					<div class='carousel-caption carousel-caption-blue padding-bottom-sm'>
+									<div class='carousel-caption-text text-center padding-bottom-none'>";
+						$caption_src_close	= "</div>	</div></div>";
 					}
 					$tempkey = $key++;	
 					$class = ($tempkey == '0' ? "active" : "");	// Makes sure the first item is set to active
 					echo "<div class='item {$class} '>
 							  {$img_src}
-							  <div class='container'>
-           					<div class='carousel-caption carousel-caption-blue padding-bottom-sm'>
-									<div class='carousel-caption-text text-center padding-bottom-none'>
-										<h2 class='margin-top-none'>{$repeat->label}</h2>
-                  <span class='hidden-xs hidden-sm'>{$repeat->summary}
-										{$link_src} 	</span>
-									</div>				
-							  	</div>
-							  </div>
+							  $caption_src_open
+										$label_src
+                  $summary_src
+									$caption_src_close
 							</div>
 						";
-				}
+        unset($caption_src_open); 
+        unset($label_src);
+        unset($summary_src);
+        unset($caption_src_close);
+				} 
+        
 			echo "</div>";
 
 

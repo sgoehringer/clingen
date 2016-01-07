@@ -1,0 +1,194 @@
+/* CSS Document */
+.progress-bar-striped, .progress-striped .progress-bar {
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-size: 40px 40px;
+}
+.progress-bar.active, .progress.active .progress-bar {
+  animation: 2s linear 0s normal none infinite running progress-bar-stripes;
+}
+
+.easy-autocomplete-container {
+    top: 46px;  /* --- Moves the autocomplete box down to handle the autowidth --- */
+}
+
+
+
+/* --- page layout styles --- */.u_style #wrapper {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 75em;
+  min-width: 58em;
+  margin: 0 auto;
+  background: #fff;
+  text-align: left; /* this overrides the text-align: center on the body element. */
+}
+.u_style #innerWrapper {
+  position: inherit;
+  z-index: 4;
+  width: 100%;
+  max-width: 75em;
+  min-width: 58em;
+  background: #fff;
+  clear: both;
+}
+.u_style #sideColumn1 {
+  background: #FFF;
+  border-bottom-color: #7e0000;
+  position: relative;
+  z-index: 5;
+  float: left;
+  width: 11.5em; /* since this element is floated, a width must be given */
+  padding: 15px 0; /* top and bottom padding create visual space within this div */
+}
+.u_style #sideColumn1 div {
+  margin: 0 0 0 5px; /* this creates the left and right margin for the side columns */
+}
+.u_style #content, .u_style #content2 {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 0px 12.5em;
+}
+.u_style #content div {
+  margin: 0 10px 0 20px; /* padding here creates white space "inside the box." */
+  width: 88%;
+}
+.col {
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  bottom: 0;
+}
+.side1 {
+  position: absolute;
+  z-index: 0;
+  bottom: 0;
+  width: 12em;
+  background: #900;
+  border-right: #bb8d49 7px solid;
+}
+html> /* hide from ie6 and under  */.clearer {
+  height: 1px;
+  overflow: hidden;
+  margin-top: -1px;
+  clear: both;
+}/* --- sideColumn1 styles --- */
+#sideColumn1 ul {
+  height: inherit;/* test */
+  list-style: none;
+  padding: 0;
+  margin: 0px 0 5px 0;
+}
+* html #sideColumn1 ul {
+  height: 1%;/* IE6 fix to give list "hasLayout" */
+}
+#sideColumn1 ul li {
+  padding: 2px;
+  display: block; /* Fix for IE excessive space between list items */
+  border-bottom: none;/*border-bottom: 2px solid #7e0000;*/
+}
+#sideColumn1 a {/*display: block;*/
+  font-weight: normal;
+  font-size: 1.1em;
+  text-decoration: none;
+  padding: 0px;
+}
+#sideColumn1 a:link, #sideColumn1 a:visited {
+  color: #06c;
+  background-color: #FFF;
+}
+#sideColumn1 a:focus, #sideColumn1 a:hover, #sideColumn1 a:active {
+  color: #06c;
+  background-color: #FFF;
+}
+#sideColumn1 h3 {
+font-size: 1.2em;
+text-transform: uppercase;
+  margin: 0px;
+  padding: 0px;
+  color: #dac092;
+  border-bottom: 1px solid #7e0000;
+  font-weight:normal;
+}
+
+#sideColumn1 {
+  overflow:scroll;
+  max-height:800px;
+}
+
+
+
+
+.tt-menu, .gist {
+    text-align: left;
+}
+.typeahead, .tt-query, .tt-hint {
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 24px;
+    line-height: 30px;
+    outline: medium none;
+    padding: 8px 12px;
+    width: 396px;
+}
+.twitter-typeahead {
+    width:100% !important;
+}
+.typeahead {
+    background-color: #fff;
+}
+.typeahead:focus {
+    border: 2px solid #0097cf;
+}
+.tt-query {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+.tt-hint {
+    color: #999;
+}
+.tt-menu {
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    margin: 12px 0;
+    padding: 8px 0;
+    width: 422px;
+}
+.tt-suggestion {
+    font-size: 18px;
+    line-height: 24px;
+    padding: 3px 20px;
+}
+.tt-suggestion:hover {
+    background-color: #0097cf;
+    color: #fff;
+    cursor: pointer;
+}
+.tt-suggestion.tt-cursor {
+    background-color: #0097cf;
+    color: #fff;
+}
+.tt-suggestion p {
+    margin: 0;
+}
+.gist {
+    font-size: 14px;
+}
+#custom-templates .empty-message {
+    padding: 5px 10px;
+    text-align: center;
+}
+#multiple-datasets .league-name {
+    border-bottom: 1px solid #ccc;
+    margin: 0 20px 5px;
+    padding: 3px 0;
+}
+#scrollable-dropdown-menu .tt-menu {
+    max-height: 150px;
+    overflow-y: auto;
+}
+#rtl-support .tt-menu {
+    text-align: right;
+}
+

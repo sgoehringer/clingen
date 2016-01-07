@@ -49,6 +49,9 @@ include("./inc/head.php");
           $tempval .= "<li><a href='{$match->url}' class='$tempcss' style='' title='{$match->title}'>{$match->title}</a></li>";
             unset($tempcss);
           }
+          
+        
+      
           echo $tempval;
         echo "</ul></div>"; 
     echo "</div>";
@@ -56,22 +59,57 @@ include("./inc/head.php");
     ?>
 		
 		<div class="row">
+			<div class="col-sm-12">
+      
+			 <?php
+	$key = 0;
+	if(count($page->repeat_callout)) { 
+		echo "<div class='row padding-top-md'>";
+			foreach($page->repeat_callout as $match) {
+       
+       $templink = ($match->relate_page->url ? $match->relate_page->url : $match->url_website);
+       if($templink) {
+         $temphrefopen = "<a class='' href='{$templink}'>";
+         $temphrefclose = "</a>";
+         $temphrefmore = "<a class='btn btn-xs btn-default' title='{$match->label}' href='{$templink}'>more &raquo;</a>";
+       }
+				if($match->image){ 
+					$img_sized	= $match->image->size(300,200);
+					$img_src	= "<div class='col-xs-4'>{$temphrefopen}<img src='{$img_sized->url}' class='img-responsive thumbnail' alt='{$img_sized->title}' />{$temphrefclose}</div>";
+				}
+				echo "<div class='col-sm-12 col-xs-12 padding-bottom-md'>
+						
+            <div class='col-sm-8'>
+						  {$temphrefopen}<h4 class='headingtight'>{$match->label}</h4> 	{$temphrefclose}
+						  <p class=' hidden-xs text-sm text-muted'>{$match->summary}</p> {$temphrefmore}
+          </div>{$img_src}
+					  </div>
+					";
+      unset($templink);
+      unset($temphrefopen);
+      unset($temphrefclose);
+      unset($temphrefmore);
+			}
+		echo "</div>";
+	}
+?> 
+				
+			</div>
+      
     <div class="col-sm-12 padding-bottom-sm">
    <span class='bodytext'><?=$page->body; ?> </span>
     </div>
-			<div class="col-sm-6">
+      
+      <? if($page->event_location || $page->mapmarker) { ?>
+
+			<div class="col-sm-12">
+      <hr />
       <h4><?=$page->event_location; ?></h4>
-				<div class="text-muted">
+      <div class='row'>
+        <div class="col-sm-12">
 				<?=$page->mapmarker->address; ?>
 				</div>
-				<hr />
-				<label>Date</label> <?=$date_start; ?> (<?=$event_time_start; ?>) <span class="text-muted">to</span> <?=$date_end; ?> (<?=$event_time_end; ?>)<br />
-				<? if($page->url_website) { ?>
-				<label>Website</label> <?=$page->url_website; ?>
-				<? } ?>
-			</div>
-			<div class="col-sm-6">
-			
+        </div>
 				<?
 				
 				$mapmarker = $modules->get('MarkupGoogleMap'); 
@@ -79,6 +117,7 @@ include("./inc/head.php");
 				
 				?>
 			</div>
+      <? } ?>
 		</div>
         <hr />
 		<?=$img; ?>

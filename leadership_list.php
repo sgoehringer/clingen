@@ -37,7 +37,7 @@ include("./inc/head.php");
       echo "<h3>Chairs</h3><div class='row'>";
             foreach($submatches as $submatch) {
               $i++; // Increments the key
-        $temprow = ($i % 3 == 2 ? 'clear-left' : ''); // adds this class to the 3rd
+        $temprow = ($i % 3 == 1 ? 'clear-left' : ''); // adds this class to the 3rd
           if($submatch->image) {
             $img_sized = $submatch->image->size(200,200)->url;
            $tempimg = "<img src='{$img_sized}' class='thumbnail img img-responsive img-rounded' alt='{$submatch->title}'>";
@@ -58,6 +58,7 @@ include("./inc/head.php");
           }
           echo "</div>";
         unset($submatches);
+        unset($i);
         unset($tempclass);
       }
       
@@ -68,7 +69,7 @@ include("./inc/head.php");
       echo "<h3 class='clearfix'>Members</h3><div class='row'>";
             foreach($submatches as $submatch) {
               $i++; // Increments the key
-        $temprow = ($i % 3 == 2 ? 'clear-left' : ''); // adds this class to the 3rd
+        $temprow = ($i % 3 == 1 ? 'clear-left' : ''); // adds this class to the 3rd
           if($submatch->image) {
             $img_sized = $submatch->image->size(200,200)->url;
            $tempimg = "<img src='{$img_sized}' class='thumbnail img img-responsive img-rounded' alt='{$submatch->title}'>";
@@ -98,7 +99,7 @@ include("./inc/head.php");
       echo "<h3 class='clearfix'>Coordinators</h3><div class='row'>";
             foreach($submatches as $submatch) {
               $i++; // Increments the key
-        $temprow = ($i % 3 == 2 ? 'clear-left' : ''); // adds this class to the 3rd
+        $temprow = ($i % 3 == 1 ? 'clear-left' : ''); // adds this class to the 3rd
           if($submatch->image) {
             $img_sized = $submatch->image->size(200,200)->url;
            $tempimg = "<img src='{$img_sized}' class='thumbnail img img-responsive img-rounded' alt='{$submatch->title}'>";

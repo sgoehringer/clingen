@@ -48,7 +48,7 @@ include("./inc/head.php"); ?>
 	$t->showAtTags = true; // show @user tags in the tweets?
 	$t->showDate = 'after'; // show date/time: 'before', 'after', or blank to disable.
 	$t->showReplies = false; // show Twitter @replies in timeline?
-	$t->showRetweets = false; // show Twitter retweets in timeline? 
+	$t->showRetweets = true; // show Twitter retweets in timeline? 
 	// generated markup options:
 	$t->listOpen = "<div class='row MarkupTwitterFeed'>";
 	$t->listClose = "</div>";
@@ -67,7 +67,7 @@ include("./inc/head.php"); ?>
 <h4>In The News</h4>
 <ul class="list-unstyled padding-top-none">
 <?
-$matches = $pages->find("template=news_article, limit=3");
+$matches = $pages->find("template=news_article, limit=3,  sort=-date_start");
 		foreach($matches as $match) {
 		$string1 = $match->title;
 		$string1 = (strlen($string1) > 100) ? substr($string1,0,100).'...' : $string1;
