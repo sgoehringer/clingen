@@ -91,7 +91,7 @@ include("./inc/head.php");
       <? } ?>
     </div>
     
-    <? } ?>
+    <? } else { ?>
     
     <table class='table table-striped'>
       <tr>
@@ -139,6 +139,7 @@ include("./inc/head.php");
     ?>
     </table>
    *Final classification upgraded after expert review
+   <? } ?>
 	</div></div>
 	<? include("./inc/nav_well.php"); ?>
 </div>
