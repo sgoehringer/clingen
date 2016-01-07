@@ -1,4 +1,4 @@
-PROCESSWIRE TEMPLATE FILES
+PROCESSWIRE TEMPLATE FILES 
 ==========================
 
 The files in this directory correspond with the templates list in ProcessWire admin. Template files are just
