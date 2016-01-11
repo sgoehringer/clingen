@@ -75,7 +75,7 @@ myApp = myApp || (function () {
 
 
 
-jsonData = $.getJSON( "/site/templates/assets/resource_web_list_search_assets/data/localTerm_data.json", function() {
+jsonData = $.getJSON( "/site/templates/assets/resource_web_list_search_assets/data/localTerm_data-01072016.json", function() {
   console.log('JSON Data Loaded');
 });
  
@@ -86,7 +86,7 @@ jsonData.complete(function(jsonData) {
   $('#infoButtonSearcher').hide();
   $('#infoButtonSearcherMessage').show();
   var options = {
-    url: '/site/templates/assets/resource_web_list_search_assets/data/localTerm_data.json',
+    url: '/site/templates/assets/resource_web_list_search_assets/data/localTerm_data-01072016.json',
     //getValue: "sN",
     list: {
       match: {
