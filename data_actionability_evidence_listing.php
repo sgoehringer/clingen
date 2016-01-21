@@ -1,23 +1,17 @@
-<?php
+<? 
 
       $term = $sanitizer->text($input->urlSegment1);  // Grab the variable from first
       $term = strtolower($term);                      // make everything lower case
-     
-     if($term) {
+      
+      if($term) {
+      //echo $term."<br>";
       if (strpos($term,'omim') !== false) {
           //echo 'omim<br>';
           if (($pos = strpos($term, "_")) !== FALSE) { 
             $termClean = substr($term, $pos+1);
           }
           // Checks to see if the omim id was found
-          $results = $pages->find("template=data_clinical_validity, data_omim=$termClean");
-      } elseif (strpos($term,'orphanet') !== false) {
-          //echo 'orphanet<br>';
-          if (($pos = strpos($term, "_")) !== FALSE) { 
-            $termClean = substr($term, $pos+1);
-          } 
-          // Checks to see if the orphanet id was found
-          $results = $pages->find("template=data_clinical_validity, data_orphanet=$termClean");
+          $results = $pages->find("template=data_actionability_evidence, data_omim*=$termClean");
       } elseif (strpos($term,'hgnc') !== false) {
           //echo 'hgnc<br>';
           if (($pos = strpos($term, "_")) !== FALSE) { 
@@ -25,13 +19,13 @@
           }
           
           // Checks to see if the gene was found
-          $results = $pages->find("template=data_clinical_validity, data_gene=$termClean");
+          $results = $pages->find("template=data_actionability_evidence, data_genes.data_gene=$termClean");
           
           // if no results then check to see if it is a HGNC ID, not term
           if(!count($results)) {
             $termClean = "HGNC:".$termClean;
-            $results = $pages->find("template=data_clinical_validity, data_hgnc=$termClean");
-             }
+            $results = $pages->find("template=data_actionability_evidence, data_genes.data_hgnc=$termClean");
+          }
       }
       //echo $termClean."<br>";
       $termClean = strtoupper($termClean);                      // make everything lower case
@@ -45,9 +39,6 @@
        //throw new Wire404Exception();
       }
       }
-
-
-
 $showchildren = "n";
 $showsiblings = "n";
 $titleoverride = "";
@@ -61,8 +52,10 @@ include("./inc/head.php");
     
     <? if(($term) && (count($results))) { ?>
     <div class="alert alert-info" role="alert">
-    <h3 class='padding-none margin-top-none'>Clinical Validity Classification<?=$Classification?></h3>
-    <? foreach($results as $result) { 
+    <h3 class='padding-none margin-top-none'>Actionability Summary Report<?=$Classification?></h3>
+    <? 
+    
+    foreach($results as $result) { 
     $ii++;
       $orphanetId = strtoupper($result->data_orphanet);
       $orphanetId = trim($orphanetId, "ORPHA");
@@ -76,41 +69,51 @@ include("./inc/head.php");
           $files = "No Reported Evidence";
         }
         
-        if(!$result->data_orphanet) {
-          $data_orphanet = "Orphanet: N/A";
+        if(!$result->data_omim) {
+          $data_omim = "N/A";
         } else {
-          $data_orphanet = "<a href='http://www.orpha.net/consor/cgi-bin/OC_Exp.php?lng=en&Expert={$orphanetId}' target='_blank' class='text-info'>Orphanet: $result->data_orphanet <i class='glyphicon glyphicon-new-window text-xs'></i></a>";
+          $omims = explode(",", $result->data_omim);
+          foreach($omims as $omim) {
+            $omim = trim($omim, " ");
+            $data_omim .= " <a href='http://omim.org/entry/{$omim}' target='_blank' class='text-info'>$omim</a> ";
+          }
         }
         
-        if(!$result->data_omim) {
-          $data_omim = "OMIM: N/A";
+        if(!count($result->data_genes)) {
+          $data_genes = "N/A";
         } else {
-          $data_omim = "<a href='http://omim.org/entry/{$result->data_omim}' target='_blank' class='text-info'>OMIM: $result->data_omim <i class='glyphicon glyphicon-new-window text-xs'></i></a>";
+          foreach($result->data_genes as $gene) {
+            $data_genes .= " <a href='http://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id={$gene->data_hgnc}' target='_blank' class='badge'> <em>$gene->data_gene</em> <i class='glyphicon glyphicon-new-window text-xs text-white'></i></a> ";
+          }
         }
     ?>
     <? if($ii>1) { echo"<div class='clearfix'><hr></div>"; } ?>
     <dl class="dl-horizontal padding-none margin-none">
-      <dt>HGNC Gene Symbol</dt>
-      <dd class="padding-bottom-xs"><a href="http://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=<?=$result->data_hgnc?>" target="_blank" class="text-info"><em><?=$result->data_gene?></em> <i class="glyphicon glyphicon-new-window text-xs"></i></a></dd>
-      <dt>Disease Curated</dt> 
-      <dd class="padding-bottom-xs"><?=$result->label?><div class='text-sm'><?=$data_orphanet ?> &nbsp;&nbsp;|&nbsp;&nbsp; <?=$data_omim ?></div></dd>
-      <dt>Classifications &amp; Files</dt>
+      <dt>HGNC Gene Symbol(s)</dt>
+      <dd class="padding-bottom-xs"><?=$data_genes ?></dd>
+      <dt>Disorder curated</dt> 
+      <dd class="padding-bottom-xs"><?=$result->label?><div class='text-sm'><?=$data_omim ?></div></dd>
+      <dt>Actionability Summary Report</dt>
       <dd><?=$files?></dd>
       <dt>Date Last Evaluated</dt>
       <dd><?=date('d/m/Y', $result->date_start)?></dd>
     </dl>
-      <? } ?>
+      <? 
+      
+      unset($data_genes);
+      unset($data_omim);
+      } ?>
     </div>
     
     <? } else { ?>
     
     <table class='table table-striped sortTable'>
       <tr>
-        <th data-sort="string">HGNC Gene Symbol</th>
-        <th data-sort="string">Disease curated</th>
-        <th data-sort="string">Orphanet ID</th>
+        <th data-sort="string">HGNC Gene Symbol(s)</th>
+        <th data-sort="string">Disorder curated</th>
+        <? // <th data-sort="string">Orphanet ID</th> ?>
         <th data-sort="string">OMIM ID</th>
-        <th data-sort="string">Clinical Validity Classification</th>
+        <th data-sort="string">Actionability Summary Report</th>
       </tr>
     <? foreach($page->children() as $match) {
       
@@ -121,6 +124,8 @@ include("./inc/head.php");
         if(!$files) {
           $files = "No Reported Evidence";
         }
+        
+        /*
         $orphanetId = strtoupper($match->data_orphanet);
         $orphanetId = trim($orphanetId, "ORPHA");
         
@@ -129,27 +134,45 @@ include("./inc/head.php");
         } else {
           $data_orphanet = "<a href='http://www.orpha.net/consor/cgi-bin/OC_Exp.php?lng=en&Expert={$orphanetId}' target='_blank' class=''> $match->data_orphanet <i class='glyphicon glyphicon-new-window text-xs text-muted'></i></a>";
         }
-        
+        */
         if(!$match->data_omim) {
           $data_omim = "N/A";
         } else {
-          $data_omim = "<a href='http://omim.org/entry/{$match->data_omim}' target='_blank' class=''>$match->data_omim <i class='glyphicon glyphicon-new-window text-xs text-muted'></i></a>";
+          $omims = explode(",", $match->data_omim);
+          foreach($omims as $omim) {
+          $omim = trim($omim, " ");
+          $data_omim .= " <a href='http://omim.org/entry/{$omim}' target='_blank' class=''>$omim</a> ";
+          }
+        }
+        
+        if(!count($match->data_genes)) {
+          $data_genes = "N/A";
+        } else {
+          foreach($match->data_genes as $gene) {
+          $data_genes .= " <a href='http://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id={$gene->data_hgnc}' target='_blank' class='badge'> <em>$gene->data_gene</em> <i class='glyphicon glyphicon-new-window text-xs text-white'></i></a> ";
+          }
         }
         
       echo"
         <tr>
-          <td><a href='http://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id={$match->data_hgnc}' target='_blank' class=''> <em>$match->data_gene</em> <i class='glyphicon glyphicon-new-window text-xs text-muted'></i></a></td> 
-          <td>$match->label</td>
-          <td nowrap>$data_orphanet</td>
-          <td nowrap>$data_omim</td>
+          <td>$data_genes </td> 
+          <td>$match->label</td> 
+          ";
+          // <td nowrap>$data_orphanet</td>
+          echo " 
+          <td>$data_omim</td>
           <td> $files</td> 
         </tr>
       ";
       
+    unset($data_genes);
+    unset($data_omim);
     }
+    
     ?>
     </table>
-   *Final classification upgraded after expert review
+   *Non-diagnostic, excludes newborn screening &amp; prenatal testing/screening 
+   **Final classification upgraded after expert review
    
    <? } ?>
 	</div></div>
