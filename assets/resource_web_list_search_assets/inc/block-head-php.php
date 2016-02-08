@@ -357,7 +357,7 @@ if(!$urlTab) {
       
       
       $urlBase                    = 'http://service.oib.utah.edu:8080/infobutton-service/infoRequest';
-      $urlorganizationOID         = '?representedOrganization.id.root=clinicalgenome.org_dev'; 
+      $urlorganizationOID         = '?representedOrganization.id.root=clinicalgenome.org'; 
       $urlcodeSystemsTask         = '&taskContext.c.c='. $codeSystemsTask; 
 
 	if ($searchType == 'HL7') {
