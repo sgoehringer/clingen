@@ -49,7 +49,7 @@ if($showsiblings == "y") {
 ?>
 
 
-<div id="footer" class="container padding-top-xl">
+<div id="footer" class="container  background-trans padding-top-xl">
 
 
 <div id="" class="text-center visible-xs visible-sm hidden-print"><br  /><a name="footnav" id="footnav"></a>
@@ -123,6 +123,17 @@ if($showsiblings == "y") {
 			// Animation complete.
 		});
 	}); 
+  
+  $( "#toggle_button_Identifiers" ).click(function() {
+    $( "#toggle_Identifiers" ).slideToggle( "slow", function() {
+      // Animation complete.
+    });
+  });
+  $( "#toggle_button_synonyms" ).click(function() {
+    $( "#toggle_synonyms" ).slideToggle( "slow", function() {
+      // Animation complete.
+    });
+  });
 	
 	
 	//$( document.body ).click(function() {
@@ -142,15 +153,181 @@ if($showsiblings == "y") {
 	    window.location.hash = this.hash;
 	    $('html,body').scrollTop(scrollmem);
 	  });
+    
+    
+    function UpdateTableHeaders() {
+   $(".persist-area").each(function() {
+   
+       var el             = $(this),
+           offset         = el.offset(),
+           scrollTop      = $(window).scrollTop(),
+           floatingHeader = $(".floatingHeader", this)
+       
+       if ((scrollTop > offset.top) && (scrollTop < offset.top + el.height())) {
+           floatingHeader.css({
+            "visibility": "visible"
+           });
+       } else {
+           floatingHeader.css({
+            "visibility": "hidden"
+           });      
+       };
+   });
+}
+
+
+    
   </script>
   
   
+
   <?
   if($page->template->name == "resource_web_list_search") {
     include("./assets/resource_web_list_search_assets/inc/block-foot.php"); 
-  }
+  } else {
+    
 ?>
     
+
+	<script src="<?php echo $config->urls->templates?>assets/js/typeahead.bundle.js"></script>    
+    <script>
+    
+    (function($, global, undefiend) {
+    $.removeElementFromCollection = function(collection,key) {
+        // if the collections is an array
+        if(collection instanceof Array) {
+            // use jquery's `inArray` method because ie8 
+            // doesn't support the `indexOf` method
+            if($.inArray(key, collection) != -1) {
+                collection.splice($.inArray(key, collection), 1);
+            }
+        }
+        // it's an object
+        else if(collection.hasOwnProperty(key)) {
+            delete collection.key;
+        }
+    
+        return collection;
+    };
+    })(jQuery, window); 
+    
+  var data = new Bloodhound({
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  datumTokenizer: Bloodhound.tokenizers.whitespace,
+  //prefetch: 'http://54.146.173.15:9000/scigraph/vocabulary/autocomplete/brca',
+  remote: {
+    //url: '<?=$termonologyService?>vocabulary/autocomplete/%QUERY?limit=100', 
+    //&prefix=DOID
+    url: '<?=$termonologyService?>vocabulary/autocomplete/%QUERY?limit=100&prefix=OMIM&prefix=NCBIGene&prefix=Orphanet',
+    wildcard: '%QUERY',
+    filter: function (data) {
+      
+            var trim = "null";                          // set the trim var to something
+            var terms = [];                             // define the array to hold the suitable terms
+            $.each(data, function (index, value) {      // start the each loop to go through the data array
+              var lastChecker = trim;                   // defines the lastchecked match with the trim val
+              
+              trim  = value.completion.toLowerCase();   // take the term and make it lowercase
+              trim  = trim.replace(/-/g, '');            // remove the -
+              trim  = trim.replace(/,/g, '');           // remove the ,
+              trim  = trim.replace(/;/g, '');           // remove the ;
+              trim  = trim.replace(/\s/g,'');           // remove the <space>
+              curie = value.concept.curie.substring(0, value.concept.curie.indexOf(':'));
+              
+              temparray = {                             // start building a new array
+                //completion : value.completion + ' [' + value.concept.categories + ' - ' + curie + ']',  // the display term
+                completion : value.completion + ' [' + value.concept.categories + ']',  // the display term
+                synonyms : value.concept.synonyms,      // store the sysnoyms
+                categories : value.concept.categories,  // store the categories
+                //checker : trim,                          // store the trimmed value
+                //curie : curie              // store the trimmed value
+                };
+              count = value.concept.categories.length;  // count how many categories
+              
+              // check to make sure its not a prior used term at a category is assigned
+              if((lastChecker != trim) && (count > 0) && (curie != 'HP') && (curie != 'MP') && (curie != 'UBERON') ) {      
+                terms.push(temparray);
+              }
+              //console.log('last      ' + lastChecker);
+              console.log('curie   ' + curie);
+            });
+            
+            console.log(data);
+            return terms;
+        }
+  },
+});
+
+
+data.initialize();
+
+$('#remote .typeahead').typeahead(null, {
+  display: 'completion',
+  //name: 'completion',
+  //valueKey: 'completion',
+  limit: 20,
+  minLength: 2,
+  highlight: true,
+  hint: false,
+  source: data,
+  autoselect:true,
+});
+
+$('.typeahead').bind('typeahead:selected',function(evt,data){
+  console.log('SUBMIT');
+  $('#remote').submit();
+});
+    //console.log(data);
+    //console.log('completion==>' + data.completion); //selected datum object
+    //$('.typeahead').val(data.completion);
+    //console.log('labels==>' + data.concept.labels); //selected datum object
+    //$('#data_labels').val(data.concept.labels);
+    //console.log('curie==>' + data.concept.curie); //selected datum object
+    //$('#data_curie').val(data.concept.curie);
+    //console.log('synonyms==>' + data.concept.synonyms); //selected datum object
+    //$('#data_synonyms').val(data.concept.synonyms);
+//});
+//$('.typeahead').bind('typeahead:change', function(ev, suggestion) {
+//  console.log('change');
+//});
+//$('.typeahead').bind('typeahead:asyncreceive', function(ev, suggestion) {
+//console.log('asyncreceive');
+//});
+
+
+
+
+$(".toggleResource").click(function () {
+  var resourceUrl = $(this).attr('data-resourceUrl');
+  $(this).parent().parent().siblings(".resourceIframeWrapper").toggle('fast')
+    .children(".iframeSrc").attr("src", resourceUrl);
+});
+
+
+
+  $('.highlightInfo').on('click', function() {
+          var id = $(this).attr('href').replace("#", "");
+          $thisAns = $('.found_'+id);
+           $thisAns.addClass("highlightInfoDiv");                      
+          setTimeout(function(){
+               $thisAns.removeClass("highlightInfoDiv");
+          },2000);
+          //alert(id);
+          //alert($thisAns);
+  });
+  
+  
+  $('.btn-popover').popover();
+  
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
+</script>
+    
+    
+    
+    <? } ?>
 
 	<?php 
 	 

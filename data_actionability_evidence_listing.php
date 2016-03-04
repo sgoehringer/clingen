@@ -106,24 +106,28 @@ include("./inc/head.php");
     </div>
     
     <? } else { ?>
-    
-    <table class='table table-striped sortTable'>
-      <tr>
-        <th data-sort="string">HGNC Gene Symbol(s)</th>
-        <th data-sort="string">Disorder curated</th>
-        <? // <th data-sort="string">Orphanet ID</th> ?>
-        <th data-sort="string">OMIM ID</th>
-        <th data-sort="string">Actionability Summary Report</th>
+    <a href="#sqm" class='pull-right text-xs text-muted'>Semi-quantitative Metric (SQM) Scoring Methology </a>
+    <table class='table table-bordered sortTable text-sm'>
+      <tr class="">
+        <th class='text-sm text-muted col-sm-2' data-sort="string">Disorder curated</th>
+        <th class='text-sm text-muted col-sm-2' data-sort="string">HGNC Gene Symbol(s)</th>
+        <th class='text-sm text-muted col-sm-3' data-sort="string"><a href="#sqm">Outcome/ Intervention Pair</a></th>
+        <th class='text-sm text-muted col-sm-1' data-sort="string"><a href="#sqm">Severity</a></th>
+        <th class='text-sm text-muted col-sm-1' data-sort="string"><a href="#sqm">Likelihood</a></th>
+        <th class='text-sm text-muted col-sm-1' data-sort="string"><a href="#sqm">Effectiveness</a></th>
+        <th class='text-sm text-muted col-sm-1' data-sort="string"><a href="#sqm">Nature of the Intervention</a></th>
+        <th class='text-sm text-muted col-sm-1' data-sort="string"><a href="#sqm">Total</a></th>
       </tr>
     <? foreach($page->children() as $match) {
       
         unset($files);
         foreach($match->files as $file) {
-          $files .= "<a href='$file->url' target='_blank' class='btn btn-xs btn-default'><i class='glyphicon glyphicon-file'></i> $file->description</a> ";
+          $files .= "<a href='$file->url' target='_blank' class='btn btn-xs btn-default'><i class='glyphicon glyphicon-file'></i>  Report</a> ";
         }
         if(!$files) {
           $files = "No Reported Evidence";
         }
+        
         
         /*
         $orphanetId = strtoupper($match->data_orphanet);
@@ -141,7 +145,7 @@ include("./inc/head.php");
           $omims = explode(",", $match->data_omim);
           foreach($omims as $omim) {
           $omim = trim($omim, " ");
-          $data_omim .= " <a href='http://omim.org/entry/{$omim}' target='_blank' class=''>$omim</a> ";
+          $data_omim .= " <a href='http://omim.org/entry/{$omim}' target='_blank' class='text-muted'>$omim</a> ";
           }
         }
         
@@ -149,21 +153,33 @@ include("./inc/head.php");
           $data_genes = "N/A";
         } else {
           foreach($match->data_genes as $gene) {
-          $data_genes .= " <a href='http://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id={$gene->data_hgnc}' target='_blank' class='badge'> <em>$gene->data_gene</em> <i class='glyphicon glyphicon-new-window text-xs text-white'></i></a> ";
+          $data_genes .= " <a href='http://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id={$gene->data_hgnc}' target='_blank' class='text-black'> <em>$gene->data_gene</em> </a> ";
           }
         }
-        
-      echo"
-        <tr>
-          <td>$data_genes </td> 
-          <td>$match->label</td> 
-          ";
-          // <td nowrap>$data_orphanet</td>
-          echo " 
-          <td>$data_omim</td>
-          <td> $files</td> 
-        </tr>
+      
+      unset($i);
+      foreach($match->data_actionability_score as $item) {
+        $rows = count($match->data_actionability_score);
+        $score_var = explode(",", $item->var);
+        $i++;
+        if($i == "1") {
+            echo"<tr style='border-top: 3px double #ccc;'>";
+            echo "<td rowspan='$rows'>$match->label<div class='text-xs text-muted'>OMIM: $data_omim</div> $files</td> 
+            <td rowspan='$rows'>$data_genes</td>  
+            ";
+        } else {
+        echo"<tr>";
+        }
+        echo "
+            <td class=''>".$item->label."</td> 
+            <td>".$score_var[0]."</td>  
+            <td>".$score_var[1]."</td>  
+            <td>".$score_var[2]."</td> 
+            <td>".$score_var[3]."</td> 
+            <td>".$score_var[4]."</td> 
+          </tr>
       ";
+      }
       
     unset($data_genes);
     unset($data_omim);
@@ -175,8 +191,58 @@ include("./inc/head.php");
    **Final classification upgraded after expert review
    
    <? } ?>
+   <hr />
+   <h3 id="sqm">Semi-quantitative Metric (SQM)</h3>
+   <table class='table table-striped'>
+     <tr height="29">
+       <td height="29" width="88"><p>Category</p></td>
+       <td width="330"><p>Levels</p></td>
+       <td width="204"><p>Level of Evidence</p></td>
+     </tr>
+     <tr height="84">
+       <td height="84" width="88"><p>Severity</p></td>
+       <td width="330"><p>3 - sudden death</p>
+         <p>2 - possible death or major morbidity</p>
+         <p>1 -  modest morbidity</p>
+         <p>0 - minimal or no morbidity</p></td>
+       <td width="204"><p>NA</p></td>
+     </tr>
+     <tr height="103">
+       <td height="103" width="88"><p>Likelihood of Disease</p></td>
+       <td width="330"><p>3 - &gt;40% chance</p>
+         <p>2 - 5-39% chance</p>
+         <p>1 - 1-4% chance</p>
+         <p>0 - &lt;1% chance or unknown</p></td>
+       <td width="204"><p>A = substantial evidence</p>
+         <p>B = moderate evidence</p>
+         <p>C = minimal evidence</p>
+         <p>D = poor evidence</p>
+         <p>E = expert contributed evidence</p></td>
+     </tr>
+     <tr height="103">
+       <td height="103" width="88"><p>Efficacy of Intervention</p></td>
+       <td width="330"><p>3 - highly effective<br>
+         2 - moderately effective<br>
+         1 - minimally effective</p>
+         <p>0 - ineffective/no intervention</p>
+         <p>IN* – ineffective/no intervention</p></td>
+       <td width="204"><p>A = substantial evidence</p>
+         <p>B = moderate evidence</p>
+         <p>C = minimal evidence</p>
+         <p>D = poor or conflicting evidence</p>
+         <p>E = expert contributed evidence</p></td>
+     </tr>
+     <tr height="142">
+       <td height="142" width="88"><p>Nature of Intervention</p></td>
+       <td width="330"><p>3 - low risk/medically acceptable/ low   intensity intervention</p>
+         <p>2 - moderately acceptable/risk/   intensive interventions</p>
+         <p>1 - greater risk/less acceptable/   substantial interventions</p>
+         <p>0 - high risk/poor acceptable/   intensive or no intervention</p></td>
+       <td width="204"><p>NA</p></td>
+     </tr>
+   </table>
 	</div></div>
-	<? include("./inc/nav_well.php"); ?>
+<? include("./inc/nav_well_workinggroup.php"); ?>
 </div>
 	
 

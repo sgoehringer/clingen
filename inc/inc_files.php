@@ -21,8 +21,14 @@ if(count($page->files)) {
     $tempval = " (".$match->file->ext.")";
     }
     
+    if($match->description) {
+      $description = $match->description;
+    } else {
+      $description = $match;
+    }
+    
     // Print the following.  NOTE - The onClick is google tracking code
-    echo "<li><a href='{$match->url}' title='{$match->title}' target='new' onClick=\"_gaq.push(['_trackEvent', 'resource', '', '{$match->title}', 1, true]);\"><span class='glyphicon glyphicon-file'></span> {$match->description} {$tempval}</a></li>
+    echo "<li><a href='{$match->url}' title='{$match->title}' target='new' onClick=\"_gaq.push(['_trackEvent', 'resource', '', '{$match->title}', 1, true]);\"><span class='glyphicon glyphicon-file'></span> {$description} {$tempval}</a></li>
     ";
   
     // Unset the temp val

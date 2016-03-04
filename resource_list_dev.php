@@ -8,6 +8,8 @@ if($pages->get(1)->toggle_yes_no == 1) {
   $enableSearch = "true";
 }
 
+// override
+$enableSearch = "true";
 
 function array_value_recursive($key, array $arr){
     $val = array();
@@ -1300,7 +1302,7 @@ echo "<pre>InfoButton<br>";
       print_r($data['feed']);
       echo "</pre>";
 
-*/
+/*
 ?>
 
 <? include("./inc/foot.php"); 

@@ -48,11 +48,6 @@ $subTopicvc               = $sanitizer->text($input->get['subTopic_v_c']);
 $subTopicvcs              = $sanitizer->text($input->get['subTopic_v_cs']);
 $subTopicvdn              = $sanitizer->text($input->get['subTopic_v_dn']);
 
-	//Bret added 12/30/2015 for handling HL7 requests with performer and informationRecipient values
-      $hl7_urlperformer               = $sanitizer->text($input->get['performer']);
-      $hl7_urlinformationRecipient    = $sanitizer->text($input->get['informationRecipient']);
-
-
 $resultCode               = $mainSearchCriteriavc; 
 $resultCodeSystem         = $mainSearchCriteriavcs; 
 $resultDisplayName        = $mainSearchCriteriavdn; 
@@ -220,9 +215,9 @@ if(!$urlTab) {
             $showNews = "false";
             $showpatient = "false";
             $codeSystemContextSiteOrder = array(
-			  2=> "CPIC Pharmacogenomics Guidelines", /*BRET ADDED on 9/30/2015 at 11:50 am - please delete this comment*/ 
+			  0=> "CPIC Pharmacogenomics Guidelines", /*BRET ADDED on 9/30/2015 at 11:50 am - please delete this comment*/ 
               1 => "GTR",
-			  0 => "PharmGKB",			  
+			  2 => "PharmGKB",			  
               3 => "MedGen",
               4 => "Genetic Practice Guidelines",
               5 => "Genetics Home Reference",
@@ -237,13 +232,13 @@ if(!$urlTab) {
             $resultCodeSystem = "2.16.840.1.113883.6.281";
             $codeSystemsName = "HUGO HGNC gene symbols";
             $showNews = "false";
-            $showpatient = "true"; 
+            $showpatient = "true";
             $codeSystemContextSiteOrder = array(
-              0 => "ClinGen", /*BRET ADDED on 9/30/2015 at 11:50 am - please delete this comment*/
-			  1 => "MedGen",
-              2 => "Genetic Practice Guidelines",
-              3 => "GTR",
-              4 => "PharmGKB",
+              0 => "MedGen",
+              1 => "Genetic Practice Guidelines",
+              2 => "GTR",
+              3 => "PharmGKB",
+			  4 => "ClinGen Genome Curation Page", /*BRET ADDED on 9/30/2015 at 11:50 am - please delete this comment*/
               5 => "OMIM",
               6 => "Genetics Home Reference",
               7 => "Gene Reviews",
@@ -275,42 +270,16 @@ if(!$urlTab) {
             $showNews = "false";
             $showpatient = "false";
             $codeSystemContextSiteOrder = array(
-			  0 => "ClinGen", /*BRET ADDED on 9/30/2015 at 11:50 am - please delete this comment*/
-              1 => "Genetic Practice Guidelines",
-              2 => "GTR",
-              3 => "OMIM",
-              4 => "GTR",
-              5 => "PharmGKB",
-              6 => "Gene Reviews",
-			  7 => "MedGen",
-              8 => "Genetics Home Reference",
-              9 => "ClinVar",
-              10 => "G2C2",
-              11 => "1000 Genomes",
-              );
-            break;
-		
-		 //added 01/07/2016 by Bret Heale for ORPHANET lookup - this IS TEMPORARY - very ugly non-standard stuff but works as temp solution
-		 //this should be redone when ClinGen has a terminology server running and an OID for Orphanet can be found
-		 case "ORPHANET":
-            $codeSystemsTask = "PROBLISTREV";
-            $resultCodeSystem = "ORPHANET";
-            $codeSystemsName = "ORPHANET";
-            $showNews = "false";
-            $showpatient = "false";
-            $codeSystemContextSiteOrder = array(
-			  0 => "ClinGen", /*BRET ADDED on 9/30/2015 at 11:50 am - please delete this comment*/
-              1 => "Genetic Practice Guidelines",
-              2 => "GTR",
-              3 => "OMIM",
-              4 => "GTR",
-              5 => "PharmGKB",
-              6 => "Gene Reviews",
-			  7 => "MedGen",
-              8 => "Genetics Home Reference",
-              9 => "ClinVar",
-              10 => "G2C2",
-              11 => "1000 Genomes",
+              0 => "Genetic Practice Guidelines",
+              1 => "GTR",
+              2 => "OMIM",
+              3 => "GTR",
+              4 => "PharmGKB",
+              5 => "Gene Reviews",
+              6 => "Genetics Home Reference",
+              7 => "ClinVar",
+              8 => "G2C2",
+              9 => "1000 Genomes",
               );
             break;
     }
@@ -357,26 +326,18 @@ if(!$urlTab) {
       
       
       $urlBase                    = 'http://service.oib.utah.edu:8080/infobutton-service/infoRequest';
-      $urlorganizationOID         = '?representedOrganization.id.root=clinicalgenome.org_dev'; 
+      $urlorganizationOID         = '?representedOrganization.id.root=clinicalgenome.org'; 
       $urlcodeSystemsTask         = '&taskContext.c.c='. $codeSystemsTask; 
-
-	if ($searchType == 'HL7') {
-		  		$urlcodeSystemsTask = '&taskContext.c.c='. $taskContextcc; 
-				/*added by Bret 12/05/2015 for HL7 to use task which was sent to ClinGen, keeps swtich based on main search crieria code system from overriding task sent to openinfobutton> Only used beacuse our the current instance of openinfobutton is not matching with subtopic for request.*/
-	}
-
+    
+    if ($searchType == 'HL7') {
+      $urlcodeSystemsTask = '&taskContext.c.c='. $taskContextcc; 
+      /*added by Bret 12/05/2015 for HL7 to use task which was sent to ClinGen, keeps swtich based on main search crieria code system from overriding task sent to openinfobutton> Only used beacuse our the current instance of openinfobutton is not matching with subtopic for request.*/
+    }
       $urlmainSearchCriteriaVC    = '&mainSearchCriteria.v.c='.$resultCode;
       $urlmainSearchCriteriaVCS   = '&mainSearchCriteria.v.cs='.$resultCodeSystem;
       $urlmainSearchCriteriaVDN   = '&mainSearchCriteria.v.dn='. str_replace(' ', '%20', $resultDisplayName);
       $urlperformer               = '&performer='.$localPerformersPerformer;
       $urlinformationRecipient    = '&informationRecipient='.$localPerformersInformationRecipient;
-	  
-	if ($searchType == 'HL7') {
-		$urlperformer               = '&performer='.$hl7_urlperformer;
-		$urlinformationRecipient    = '&informationRecipient='.$hl7_urlinformationRecipient;
-		/*added by Bret 12/30/2015 for HL7 to use performer and recipient that was sent to ClinGen*/
-	}	  
-	  
       $locationOfInterestaddr     = '&locationOfInterest.addr.ZIP0='.$session->interaction;
       $urlEnd                     = '&knowledgeResponseType=application/json';
       
@@ -422,7 +383,7 @@ HttpResponse::send();
 		$json = file_get_contents($jsonUrl);
     
     // SRG - NOV2 Added to allow the file storage to occur.      
-    $file = './assets/resource_web_list_search_assets/data/ib-data.txt';
+    $file = '/www/html/site/templates/assets/resource_web_list_search_assets/data/ib-data.txt';
     // The new person to add to the file
     //$data = "John Smith\n";
     $json = $sanitizer->textarea($json);  
@@ -451,13 +412,8 @@ HttpResponse::send();
       } else {
         $jsonUrl = $urlBase."".$urlorganizationOID."".$urlcodeSystemsTask."".$urlmainSearchCriteriaVC."".$urlmainSearchCriteriaVCS."".$urlmainSearchCriteriaVDN."".$urlperformer."".$urlinformationRecipient."".$locationOfInterestaddr."".$urlEnd;
        $json = $sanitizer->textarea($json);
-	   
         $json = file_get_contents($jsonUrl);
         $data = json_decode($json, TRUE);
-		
-	//	echo $jsonUrl;
-	//	exit;
-		
      }
      
         // echo $jsonUrl;
@@ -494,7 +450,7 @@ HttpResponse::send();
         //fclose($myFile);
         
         // SRG - NOV2 Added to allow the file storage to occur.      
-        $file = './assets/resource_web_list_search_assets/data/ib-data.txt';
+        $file = '/www/html/site/templates/assets/resource_web_list_search_assets/data/ib-data.txt';
         // The new person to add to the file
         //$data = "John Smith\n";
         $json = $sanitizer->textarea($json); 

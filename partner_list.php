@@ -24,7 +24,7 @@ include("./inc/head.php");
   <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="<?=$pages->get(1382)->var ?>" aria-valuemin="0" aria-valuemax="<?=$pages->get(1381)->var ?>" style="width: <?=$tempvar ?>%">
     <?=$tempvar ?>% TO FIRST TARGET GOAL
   </div>
-  <div <div class="pull-right text-xs text-muted padding-right-xs hidden-sm hidden-xs" style="padding-top: 3px"><?=$pages->get(1381)->var?> Variants</div>
+  <div class="pull-right text-xs text-muted padding-right-xs hidden-sm hidden-xs" style="padding-top: 3px"><?=$pages->get(1381)->var?> Variants</div>
 </div> 
   <div class='text-sm text-muted'><strong>Over <?=$pages->get(1382)->var ?> variants</strong> with clinical assertions have been shared by ClinGen supporters.</div>
 </div>
@@ -68,19 +68,19 @@ var centers = [
       foreach($item->relate_supporter_type as $temp) {
         $relate_supporter_type = "{$temp->id}";
       } 
-      if($relate_supporter_type == "1449") {
-          $relate_supporter_type = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
-        } elseif($relate_supporter_type == "1450") {
+      //if($relate_supporter_type == "1449") {
+        //  $relate_supporter_type = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
+        //} elseif($relate_supporter_type == "1450") {
+        //  $relate_supporter_type = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+        //} elseif($relate_supporter_type == "14491450") {
+        //  $relate_supporter_type = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+        //} elseif($relate_supporter_type == "14501449") {
+        //  $relate_supporter_type = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+        //} elseif($relate_supporter_type == "2059") {
+        //  $relate_supporter_type = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
+        //} else {
           $relate_supporter_type = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
-        } elseif($relate_supporter_type == "14491450") {
-          $relate_supporter_type = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
-        } elseif($relate_supporter_type == "14501449") {
-          $relate_supporter_type = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
-        } elseif($relate_supporter_type == "2059") {
-          $relate_supporter_type = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
-        } else {
-          $relate_supporter_type = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
-        }
+        //}
 			if(!$item->mapmarker->lat) continue; 
 			if($item->mapmarker->lat == "0.000000") continue; 
 			echo "['{$item->title}', {$item->mapmarker->lat}, {$item->mapmarker->lng}, {$key}, '{$item->url}', '{$relate_supporter_type}'],";
@@ -162,7 +162,11 @@ google.maps.event.addDomListener(window, 'load', initialize);
   <ul class="list-icon icon-ok">
   <?
   // The following finds all of the locations this staff person is tied with, loops through and prints.
+  //$matches = $pages->find("template=staff, sort=title")->relate_supporter;
+  //$matches = $fields->find("relate_supporter");
   $matches = $pages->find("template=partner, sort=title");
+  
+  
   foreach($matches as $match) {
     foreach($match->relate_supporter_type as $temp) {
     $relate_supporter_type .= "{$temp->id}

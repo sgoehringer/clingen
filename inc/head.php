@@ -9,6 +9,7 @@
  $today = strtotime(date('Y-m-d')); // Today's Date
  $shareUrl = $page->httpUrl; // The complete URL for the Page
  $shareTitle = $page->title; // The title of the page
+ $termonologyService = "http://54.152.89.190:9000/scigraph/";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,10 +60,8 @@
   <div class=" hidden-print padding-bottom-sm padding-top-sm" id="">
 	<div class="container hidden-xs container-clear">
   <div class="pull-right padding-bottom-sm"> 
-			<div class="pull-right padding-left-md"> <a  href="<? echo $pages->get(1114)->url; ?>" title="<?=$pages->get(1114)->title?>" class="text-blue"><?=$pages->get(1114)->title?></a> </div>
-			<div class="pull-right padding-left-md"> <a  href="<? echo $pages->get(1000)->url; ?>" title="<? echo $sitename_long ?> <?=$pages->get(1000)->title?>" class="text-blue"><?=$pages->get(1000)->title?></a> </div>
 			<div class="pull-right padding-left-md btn-group btn-group-hover">
-				<a aria-expanded="false" href="<? echo $pages->get(2743)->url; ?>" title="<? echo $sitename_long ?> <?=$pages->get(2743)->title?>" class="text-blue" data-hover='dropdown' ><?=$pages->get(2743)->title?></a> 
+				<a aria-expanded="false" href="<? echo $pages->get(2743)->url; ?>" title="<? echo $sitename_long ?> <?=$pages->get(2743)->title?>" class="text-blue text-sm" data-hover='dropdown' ><i class='glyphicon glyphicon-user'></i> <?=$pages->get(2743)->title?></a> 
 				<ul class="dropdown-menu hidden-sm hidden-xs" style="z-index:1001">
 				   <?
 				   $children = $pages->get(1119)->children;
@@ -72,6 +71,9 @@
 				   ?>
 				  </ul>
 			</div>
+			<div class="pull-right padding-left-md"><a  href="<? echo $pages->get(3792)->url; ?>" title="<?=$pages->get(3792)->title?>" class="text-blue text-sm"><i class='glyphicon glyphicon-book'></i> <?=$pages->get(3792)->title?></a> </div>
+			<div class="pull-right padding-left-md"><a  href="<? echo $pages->get(3831)->url; ?>" title="<? echo $sitename_long ?> <?=$pages->get(3831)->title?>" class="text-blue text-sm"><i class='glyphicon glyphicon-check'></i> <?=$pages->get(3831)->title?></a> </div>
+			<div class="pull-right padding-left-md"><a  href="<? echo $pages->get(1491)->url; ?>" title="<? echo $sitename_long ?> <?=$pages->get(1491)->title?>" class="text-blue text-sm"><i class='glyphicon glyphicon-send'></i> <?=$pages->get(1491)->title?></a> </div>
 		<!-- 
 		<form class="col-sm-3 pull-right" role="form" action='<?php echo $config->urls->root?>references-and-policies/search/' method='get'>
 			<div class="input-group ">
@@ -114,14 +116,98 @@
 					echo "
 						<li class='$class $classhidden $tempkey'>
 							<a class='$class dropdown-toggle' data-hover='dropdown' href='{$child->url}' title='{$child->seotitle}' >{$child->title}</a>";
-							if(count($pages->find("parent=$child->id, template!=partner"))) {
-							echo "<ul class='dropdown-menu dropdown-menu-left'>";
-							$submatches = $pages->find("sort=sort, parent=$tempid, template!=partner");
-								foreach($submatches as $submatch) {
-									  echo "<li class=''><a href='{$submatch->url}' title='{$submatch->title}'>{$submatch->title}</a></li>";
-								}
-						echo "</ul>";
-							}
+							$submatches = $pages->find("parent=$tempid");
+             if(count($submatches)) {
+               if($child == "1035") {
+                  $submatches = $pages->get("1035")->children();
+                  echo "<ul class='dropdown-menu hidden-xs  dropdown-menu-right' style='width:500px; left:-200px;'>";
+                    foreach($submatches as $submatch) {
+                      $i++; // Increments the key
+                      $temprow = ($i % 4 == 1 ? 'clear-left' : ''); // adds this class to the 3rd
+                        if($submatch->image_icon) {
+                          $img_sized = $submatch->image_icon->size(200,200)->url;
+                         $tempimg = "<img src='{$img_sized}' class='img img-responsive img-rounded' alt='{$submatch->title}'>";
+                        } else {
+                         $tempimg = "";
+                        } 
+                        echo "<li class='col-sm-3 padding-sm $temprow'><a href='{$submatch->url}' class='text-muted' title='{$submatch->title}'>$tempimg <div class='text-xs text-center'>{$submatch->title}<div></a></li>";
+                    }
+                    unset($i);
+                  echo "</ul>";
+               } else if($child == "1001") {
+                  $submatches = $pages->get("1001")->children("sort=title");
+                  echo "<ul class='dropdown-menu hidden-xs  dropdown-menu-right' style='width:500px; left:-200px;'>";
+                    foreach($submatches as $submatch) {
+                      $i++; // Increments the key
+                      $temprow = ($i % 4 == 1 ? 'clear-left' : ''); // adds this class to the 3rd
+                        if($submatch->image_icon) {
+                          $img_sized = $submatch->image_icon->size(200,200)->url;
+                         $tempimg = "<img src='{$img_sized}' class='img img-responsive img-rounded' alt='{$submatch->title}'>";
+                        } else {
+                         $tempimg = "";
+                        } 
+                        echo "<li class='col-sm-3 padding-sm $temprow'><a href='{$submatch->url}' class='text-muted' title='{$submatch->title}'>$tempimg <div class='text-xs text-center'>{$submatch->title}<div></a></li>";
+                    }
+                    unset($i);
+                  echo "</ul>";
+               } else if($child == "1001") {
+                  $submatches = $pages->get("1001")->children("sort=sort");
+                  echo "<ul class='dropdown-menu hidden-xs  dropdown-menu-right' style='width:500px; left:-200px;'>";
+                    foreach($submatches as $submatch) {
+                      $i++; // Increments the key
+                      $temprow = ($i % 4 == 1 ? 'clear-left' : ''); // adds this class to the 3rd
+                        if($submatch->image_icon) {
+                          $img_sized = $submatch->image_icon->size(200,200)->url;
+                         $tempimg = "<img src='{$img_sized}' class='img img-responsive img-rounded' alt='{$submatch->title}'>";
+                        } else {
+                         $tempimg = "";
+                        } 
+                        echo "<li class='col-sm-3 padding-sm $temprow'><a href='{$submatch->url}' class='text-muted' title='{$submatch->title}'>$tempimg <div class='text-xs text-center'>{$submatch->title}<div></a></li>";
+                    }
+                    unset($i);
+                  echo "</ul>";
+               }  else if($child == "1040") {
+                  $submatches = $pages->get("1040")->children("sort=sort");
+                  echo "<ul class='dropdown-menu hidden-xs  dropdown-menu-right' style='width:500px; left:-375px;'>";
+                    foreach($submatches as $submatch) {
+                      $i++; // Increments the key
+                      $temprow = ($i % 4 == 1 ? 'clear-left' : ''); // adds this class to the 3rd
+                        if($submatch->image_icon) {
+                          $img_sized = $submatch->image_icon->size(200,200)->url;
+                         $tempimg = "<img src='{$img_sized}' class='img img-responsive img-rounded' alt='{$submatch->title}'>";
+                        } else {
+                         $tempimg = "";
+                        } 
+                        echo "<li class='col-sm-3 padding-sm $temprow'><a href='{$submatch->url}' class='text-muted' title='{$submatch->title}'>$tempimg <div class='text-xs text-center'>{$submatch->title}<div></a></li>";
+                    }
+                    unset($i);
+                  echo "</ul>";
+               } else if($child == "2796") {
+                  //$submatches = $pages->get("2983")->children("clingen_tool=1");
+                  $submatches = $pages->get("2983")->children("template=resource_list_item, sort=title");
+                  echo "<ul class='dropdown-menu hidden-xs  dropdown-menu-right' style='width:500px; left:-200px; padding-bottom:0px;'>";
+                    foreach($submatches as $submatch) {
+                      $i++; // Increments the key
+                      $temprow = ($i % 4 == 1 ? 'clear-left' : ''); // adds this class to the 3rd
+                        if($submatch->image) {
+                          $img_sized = $submatch->image->size(200,200)->url;
+                         $tempimg = "<img src='{$img_sized}' class='img img-responsive img-circle' alt='{$submatch->title}'>";
+                        } else {
+                         $tempimg = "";
+                        } 
+                        echo "<li class='col-sm-3 padding-sm $temprow'><a href='{$submatch->url_website}' class='text-muted' title='{$submatch->title}'>$tempimg <div class='text-xs text-center'>{$submatch->title}<div></a></li>";
+                    }
+                    unset($i);
+                    echo "<li class='col-sm-12 background-trans-blue'><a href='/clingen-tools-and-work-products/' class='text-center padding-sm text-white' title='More Tools &amp; Resources'>Additional ClinGen Tools, Documentation, &amp; Resources</a></li>";
+                  echo "</ul>";
+               } else {
+                echo "<ul class='dropdown-menu dropdown-menu-right'>";
+                  foreach($submatches as $submatch) {
+                      echo "<li class=''><a href='{$submatch->url}' title='{$submatch->title}'>{$submatch->title}</a></li>";
+                  }
+                echo "</ul>";
+               }
+              }
 						echo "</li>";
 					}
 			?>
@@ -139,6 +225,11 @@
 		$temp_carousel_indicators		= true;
 		$temp_carousel_id				= "heroCarousel";
 		include("./inc/hero_jumbo.php");
+	} elseif($page->template->name == "working_group") { 
+		$temp_carousel_arrows			= true;
+		$temp_carousel_indicators		= true;
+		$temp_carousel_id				= "headerCarousel";
+		include("./inc/hero_wg2.php"); 
 	} else {
 		$temp_carousel_arrows			= true;
 		$temp_carousel_indicators		= true;

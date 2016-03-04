@@ -153,7 +153,7 @@ include("./inc/head.php");
    
    <? } ?>
 	</div></div>
-	<? include("./inc/nav_well.php"); ?>
+<? include("./inc/nav_well_workinggroup.php"); ?>
 </div>
 	
 

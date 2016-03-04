@@ -26,22 +26,22 @@ if($page->image) {
   
   <?
   // Finds all of the working groups that this staff ID is tied with as a CHAIR.
-  $matches = $pages->find("template=working_group, relate_staff_chair=$page->id, sort=alphabetical");
+  $matches = $pages->find("template=working_group|working_group_subgroup|working_group_taskteam, relate_staff_chair=$page->id, sort=alphabetical");
       foreach($matches as $match) {
         $tempval .= "<li class='col-sm-6'><a href='{$match->url}.' title='{$match->title}.'>{$match->title} (Chair)</a></li>";
     }
   // Finds all of the working groups that this staff ID is tied with as a Coordinator.
-  $matches = $pages->find("template=working_group, relate_staff_coordinator=$page->id, sort=alphabetical");
+  $matches = $pages->find("template=working_group|working_group_subgroup|working_group_taskteam, relate_staff_coordinator=$page->id, sort=alphabetical");
       foreach($matches as $match) {
         $tempval .= "<li class='col-sm-6'><a href='{$match->url}.' title='{$match->title}.'>{$match->title} (Coordinator)</a></li>";
     }
   // Finds all of the working groups that this staff ID is tied with as a MEMBER.
-  $matches = $pages->find("template=working_group, relate_staff=$page->id, sort=alphabetical");
+  $matches = $pages->find("template=working_group|working_group_subgroup|working_group_taskteam, relate_staff=$page->id, sort=alphabetical");
       foreach($matches as $match) {
         $tempval .= "<li class='col-sm-6'><a href='{$match->url}.' title='{$match->title}.'>{$match->title}</a></li> ";
     }
    if($tempval) {
-    echo "<hr /><h3>Committees &amp; Working Groups</h3>"; 
+    echo "<hr /><h3>Committees, Working Groups  &amp; Task Teams</h3>"; 
     echo " <ul class='list-icon icon-arrow-right'>";
     echo $tempval;
     echo " </ul>";
