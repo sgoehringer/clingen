@@ -1,3 +1,3 @@
-TEMPLATE FILES
+ClinGen TEMPLATE FILES
 ==========================
 
