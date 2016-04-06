@@ -9,7 +9,7 @@
  $today = strtotime(date('Y-m-d')); // Today's Date
  $shareUrl = $page->httpUrl; // The complete URL for the Page
  $shareTitle = $page->title; // The title of the page
- $termonologyService = "http://54.152.89.190:9000/scigraph/";
+ $termonologyService = "https://terminologyservice.clinicalgenome.org/scigraph/";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,8 +21,8 @@
 <meta name="description" content="><?php echo $page->title ?><?php echo $page->summary; ?> - <?php echo $sitename_long; ?>">
 <meta name="keywords" content="><?php echo $page->title ?>, <?php echo $page->soe_keywords; ?>, <?php echo $sitename_short; ?>, <?php echo $sitename_long; ?>">
 
-<link href="/site/templates/assets/css/bootstrap.css" rel="stylesheet">
-<link href="/site/templates/assets/css/brand.css" rel="stylesheet">
+<link href="/site/templates/assets/css-v2/bootstrap.css" rel="stylesheet">
+<link href="/site/templates/assets/css-v2/brand.css" rel="stylesheet">
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]> 
       <script src="<?php echo $config->urls->templates?>assets/js/respond.min.js"></script>

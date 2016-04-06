@@ -44,6 +44,10 @@ include("./inc/head.php");
 		echo "</div>";
 	}
 ?> 
+
+<div class='body_secondary'>
+  <?=$page->body_secondary; ?>
+</div> 
 		<? include("./inc/inc_files.php"); ?>
 	</div></div>
 	<? include("./inc/nav_well.php"); ?>
