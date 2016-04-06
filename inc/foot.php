@@ -72,6 +72,11 @@ if($showsiblings == "y") {
         </div>
 
     		<div class="row">
+                <div id="footer_disclaimer" class="col-md-12 text-sm text-muted">
+                  <hr />
+                  The information on this website is not intended for direct diagnostic use or medical decision-making without review by a genetics professional. Individuals should not change their health behavior solely on the basis of information contained on this website. If you have questions about the information contained on this website, please see a health care professional.
+                  <hr />
+                </div>
               	<div class="col-md-4 col-sm-12 padding-sm"> 
                    <ul class="list-inline margin-none">
                       <li class='text-sm'>© <? echo date("Y"); ?> <a href="/" title="<?=$sitename_long?>" class=""><?=$sitename_long?></a> - All rights reserved</li>

@@ -541,7 +541,7 @@ if($search_terminology_success) {  // Check to see if Termonolgy service found s
                   <div class=' col-sm-2 padding-left-none'>
                   <button class='btn btn-default btn-typeahead' type='submit'>Go!</button>
                   </div>
-                  <small>ClinGen's search feature will return relevant information from both <a href='<?=$pages->get('3950')->url?>'>ClinGen Curated Resources</a> and reputable external sources.</small>
+                  <small>ClinGen's search feature will return relevant information from both <a href='<?=$pages->get('3950')->url?>'>ClinGen Curated Resources</a> and reputable external sources. <a href='#footer_disclaimer'>Search disclaimer</a></small>
                   
                   </form>
                   
@@ -955,7 +955,7 @@ if(count($resultGeneSearchArrayReturn)) {
     
     <div class="panel-heading">
     <h3 class='padding-none margin-none'>ClinGen Summary</h3>
-    <span class='text-muted'>ClinGen has uncovered information related to <strong><?=$search_terminology_label?></strong> as recently as <strong><? echo date('d/m/Y', $resultDate); ?></strong></span>
+    <span class='text-muted'>ClinGen has uncovered information related to <strong><?=$search_terminology_label?></strong><!-- as recently as <strong><? echo date('d/m/Y', $resultDate); ?>--></strong></span>
     </div>
   <div class="panel-body padding-bottom-none">
       <div class='padding-bottom-xs padding-left-xl text-sm text-muted'>Click a term and have it highlighted below and/or scroll down to the ClinGen Resources for additional information.</div>
